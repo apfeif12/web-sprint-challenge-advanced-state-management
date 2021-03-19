@@ -1,28 +1,41 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import AddForm from './components/AddForm';
-import SmurfList from './components/SmurfList';
-import Header from './components/Header';
+import AddForm from "./components/AddForm";
+import SmurfList from "./components/SmurfList";
+import Header from "./components/Header";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header />
+import { getSmurfs } from "./actions/index.js";
 
-        <main>
-          <SmurfList/>
-          <AddForm/>
-        </main>
-      </div>
-    );
-  }
+class App extends Component {
+    componentDidMount() {
+        this.props.getSmurfs();
+        console.log("get smurfs render");
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Header />
+                <main>
+                    <SmurfList />
+                    <AddForm />
+                </main>
+            </div>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    smurfs: state.smurfs,
+    loading: state.loading,
+    error: state.error,
+});
+
+export default connect(mapStateToProps, { getSmurfs })(App);
 
 //Task List:
 //1. Connect the fetchSmurfs actions to the App component.
